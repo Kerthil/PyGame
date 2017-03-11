@@ -1,6 +1,7 @@
 import random
 class Character(object):
     def __init__(self, name, atk, arm, mhp):
+
         self.name = name
         self.atk = atk
         self.arm = arm
@@ -13,6 +14,11 @@ class Character(object):
     def take_damage(self, dmg):
         self.hp = self.hp - dmg
         print self.name + ' takes ' + str(dmg) + ' Damage! Hp: ' + str(self.hp)
+
+    def mod_hp(self,delta):
+        self.hp += delta # +for healing - for damage
+        if self.hp <= 0:
+            pass #Game over? back to main screen??
 
 
 
@@ -41,10 +47,10 @@ class Enemy_factory(object): #Build enemies in a super efficient way
     """
 
     def __init__(self):
-        self.enemy_lookup_table = {
+        self.enemy_lookup_table = {  #Name, Atk , Arm, HP
             'Trent': {
                 'zone': ['forest', ],
-                'stats': ['Trent', 1, 1, 1, 1]},
+                'stats': ['Trent', 2, 1, 1, 1]},
             'Spider': {
                 'zone': ['forest', 'cave', ],
                 'stats': ['Spider', 1, 1, 1, 1]},
@@ -59,20 +65,19 @@ class Enemy_factory(object): #Build enemies in a super efficient way
                 'stats': ['Skeleton', 1, 1, 1, 1]},
         }
 
-    def generate_enemy(self, enemy):
-        return Character(enemy[0], enemy[1], enemy[2], enemy[3])
+    def generate_enemy(self, enemy, floor):
+        enemy_stat_mult = 1.5 * floor
+        return Character(enemy[0], enemy[1]*enemy_stat_mult, enemy[2]*enemy_stat_mult, enemy[3]*enemy_stat_mult)
 
     def generate_wave(self, mission_enemy_table, floor):
         enemy_wave = []
         for i in range(3):
-            enemy_stat_mult = 1.5 * floor
-            for stat in mission_enemy_table[i][1:]:
-                stat *= enemy_stat_mult
-            enemy_wave.append(self.generate_enemy(random.choice(mission_enemy_table)))
+            enemy_wave.append(self.generate_enemy(random.choice(mission_enemy_table), floor))
         return enemy_wave
 
     def generate_mission(self, zone, floor):
         mission_enemy_table = []
+
         enemy_waves = []
         for key in self.enemy_lookup_table:
             if zone in self.enemy_lookup_table[key]['zone']:
@@ -83,28 +88,29 @@ class Enemy_factory(object): #Build enemies in a super efficient way
         return enemy_waves
 
 
-class Boss(Character):
-    pass
+class combat_engine(object):
+    def deal_dmg(self, target , dmg):
+        target.mod_hp(dmg)
+
+    def combat_loop(self):
+        pass
+        """
+        "combat loop will rotate between turns of players, and the enemy
+        "
+        "
+        """
 
 
-def damage(atk,arm): #Calculates damage
-    return atk - arm   #Attacker's attack - defender's defense Returns damage
 
 
 
 
 if __name__ == "__main__":
-    Kerthil = Player("Kerthil", 5, 2, 10)
+    ef = Enemy_factory()
+    a = ef.generate_mission('cave',100)
+    for element in a:
+        for i in element:
+            print i.name , i.atk , i.arm , i.mhp
 
-    print Kerthil.atk
-    print Kerthil.arm
-    print Kerthil.mhp
-    print Kerthil.hp
-
-    Kerthil.take_damage(2)
-
-    print Kerthil.hp
-
-    Zgrill = Player("Zgrill",2,3,12)
 
 

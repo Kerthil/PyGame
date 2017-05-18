@@ -89,28 +89,61 @@ class Enemy_factory(object): #Build enemies in a super efficient way
 
 
 class combat_engine(object):
+
+    def __init_(self):
+        pass
+
     def deal_dmg(self, target , dmg):
         target.mod_hp(dmg)
 
     def combat_loop(self):
         pass
         """
-        "combat loop will rotate between turns of players, and the enemy
+        " combat loop will rotate between turns of players, and the enemy
+        "  Check speed / generate turn order
+        "      array_of_turns
+        "      for dude in array_of_turns
+        "        dude.action() # example: perform an attack
+        "        all enemies dead? you win! # Handle win condition (award xp, loot, return to game loop)
+        "        all allies dead? you lose! # Handle loss condition (game over, respawn, et cetra)
         "
         "
         """
+thius is a a changefasdf as
+"""
+Tips and tricks
+dfdfdsasf
+Create methods when you need them, never be afriad to create a method
+Keep in mind you can create methods OUTSIDE of objects.  Usually these global methods are for debugging
+Lastly, your imagination is the limit, you just need to think of it one problem at a time and solve it that way
+"""
 
 
-
-
-
-
+# This 'main' method will execute a test sequence of gameplay to test all classes and a methods in all classes
 if __name__ == "__main__":
+
+    PC_INFO = {
+        "name" : "Bob",
+        "attack" : 10,
+        "armor" : 10,
+        "max_hp" : 100,
+        "current_xp" : 0
+    }
+
+    # Create player object
+    p = Player(PC_INFO["name"], PC_INFO["attack"],
+               PC_INFO["armor"], PC_INFO["max_hp"], PC_INFO["current_xp"])
+
+    # Instantiate objects
     ef = Enemy_factory()
+    ce = combat_engine()
+
+    # Create monsters (Character object) for the player to fight
     a = ef.generate_mission('cave',100)
     for element in a:
         for i in element:
             print i.name , i.atk , i.arm , i.mhp
 
-
+    # Test combat
+    ce.combat_loop()
 

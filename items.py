@@ -5,16 +5,14 @@ class Item(object):
         self.qoh = q #Quanity of item
 
 
-<<<<<<< HEAD
-
 """
 "To Do:
 "1. check if object generated already, add on hand.
 """
 def gen_item(id):
-=======
+    pass
+
 def add_item(id):
->>>>>>> origin/master
     if id == 1: #Potion
         I1 = Item("Potion", "A simple potion used to heal 5 hp.")
     if id == 2: #Super Potion
